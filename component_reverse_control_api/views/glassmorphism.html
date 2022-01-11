@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!--<title> Glassmorphism Website | CodingLab </title>-->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+     <script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+     <script>
+        const url = "http://localhost:3000/componentstatus";
+        const setstatuschangeurl = "http://localhost:3000/setstatuschange";
+
+     
+        window.onload = function () {
+         
+          console.log("started the application >>>");
+          var x = document.getElementById("iframeid");
+          x.style.backgroundColor = "#ffaaab;";
+          setInterval(currentOrder, 2000);
+          setInterval(TotalOrderTable, 2000);
+          setInterval(tubeutilization, 2000);
+          setInterval(overallorder, 2000);
+        //   currentOrder();
+        //   TotalOrderTable();
+        //   tubeutilization();
+        //   overallorder();
+
+        // document.getElementById('iframeid').contentWindow.location.reload();
+        document.getElementById('iframeid').src += '';
+       
+        function reload() {
+    document.getElementById('iframeid').src += '';
+    document.getElementById('dockingLayout').location.reload(true);
+} btn.onclick = reload;
+       
+        }
+        
+        
+  
+        let array = [];
+        let filterarray = [];
+        let newstring;
+        let stateint;
+  
+        const tubeutilization = () => {
+          
+          fetch("http://localhost:3000/tubeutilization", {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+              tubeutilizationtable(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+  
+        const currentOrder = () => {
+         
+          fetch("http://localhost:3000/currentOrder", {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              console.log(data);
+              CurrentOrderTable(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+  
+        const getComponentStatus = () => {
+          //console.log("hit");
+          fetch(url)
+            .then((response) => {
+              return response.text();
+            })
+            .then((data) => {
+              //console.log(data);
+              viewstatus(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+  
+        const viewstatus = (data) => {
+          array = data.split("\n");
+          //newstring = array.join('');
+          //filterarray = array.split(',');
+          document.getElementById("Robot1").value = array[0];
+          document.getElementById("Conveyor1").value = array[1];
+          console.log(array);
+        };
+  
+        const setStatusChange = (stateintval) => {
+          fetch(setstatuschangeurl + "?stateint=" + stateintval, {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              //return response.json();
+            })
+            .then((data) => {
+              //console.log("entered then function and stop function will be called");
+              //viewstatus(data);
+              //stopFunction();
+              //setTimeout(10000);
+              //resumeFunction();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        const stopFunction = () => {
+          console.log("calling stop function from UI");
+          fetch("http://localhost:3000/stopfunction", {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              //return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        const resumeFunction = () => {
+          console.log("entered resume function from UI");
+          fetch("http://localhost:3000/resumefunction", {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              //return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+              //viewstatus(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+  
+        function val() {
+          stateint = document.getElementById("select_id").value;
+          setStatusChange(stateint);
+          //alert(d);
+        }
+  
+        const calldbfunction = () => {
+          console.log("calling database from nodejs to sql");
+          fetch("http://localhost:3000/nodejstosql", {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+              GenerateTable(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+  
+        const TotalOrderTable = () => {
+          console.log("calling database from nodejs to sql");
+          fetch("http://localhost:3000/totalordertable", {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+              TotalOrderinfo(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        const overallorder = () => {
+          console.log("calling database from nodejs to sql");
+          fetch("http://localhost:3000/overallordertable", {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              //console.log(data);
+              overallOrder(data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
+        
+        // creating table for data in UI from nodeJs
+  
+        let tableHeaders = [
+          "ArrivalTime",
+          "ObjectName",
+          "UniqueNum",
+          "BrandName",
+          "GroupId",
+          "TcdSn",
+          "Shelf",
+          "Slot",
+          "Released",
+        ];
+  
+        function overallOrder(data) {
+          //Build an array containing Customer records.
+          var customers = new Array();
+          customers.push([                   
+            "Type",
+            "GroupID" ,
+            "Bay",
+            "Level",
+            "Slot",
+            "Released"
+          ]);
+         // console.log(data);
+          let reqitems = [0, 1,2,3,4,5]; //taking req items only for now
+          let temparr = [];
+          for (let i = 0; i < data.length; i++) {
+            temparr = [];
+            for (let j = 0; j < reqitems.length; j++) {
+              temparr.push(Object.values(data[i])[reqitems[j]]);
+            }
+            customers.push(temparr);
+          }
+         
+          //Create a HTML Table element.
+          var table = document.createElement("TABLE");
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = customers[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < customers.length; i++) {
+            // row.style.backgroundColor='#fffff'; 
+            row = table.insertRow(-1);
+            // row.style.backgroundColor='#fa4667';          
+            for (var j = 0; j < columnCount; j++) {
+              var cell = row.insertCell(-1); 
+              cell.innerHTML = customers[i][j];
+            }
+          }
+  
+          var dvTable = document.getElementById("overallOrdertable");
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+          
+        }
+  
+  
+        function tubeutilizationtable(data) {
+          //Build an array containing Customer records.
+          var customers = new Array();
+          customers.push([                   
+            "GroupID",
+            "Tubes"                   
+          ]);
+         // console.log(data);
+          let reqitems = [0, 1]; //taking req items only for now
+          let temparr = [];
+          for (let i = 0; i < data.length; i++) {
+            temparr = [];
+            for (let j = 0; j < reqitems.length; j++) {
+              temparr.push(Object.values(data[i])[reqitems[j]]);
+            }
+            customers.push(temparr);
+          }
+         
+          //Create a HTML Table element.
+          var table = document.createElement("TABLE");
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = customers[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+              var cell = row.insertCell(-1);
+              cell.innerHTML = customers[i][j];
+            }
+          }
+  
+          var dvTable = document.getElementById("tubeutilization");
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+        }
+  
+  
+  
+        function TotalOrderinfo(data) {
+          //Build an array containing Customer records.
+          var customers = new Array();
+          customers.push([                   
+            "GroupId",
+            "Bay",
+            "Shelf",
+            "Slot"         
+          ]);
+         // console.log(data);
+          let reqitems = [0, 1, 2, 3]; //taking req items only for now
+          let temparr = [];
+          for (let i = 0; i < data.length; i++) {
+            temparr = [];
+            for (let j = 0; j < reqitems.length; j++) {
+              temparr.push(Object.values(data[i])[reqitems[j]]);
+            }
+            customers.push(temparr);
+          }
+         
+          //Create a HTML Table element.
+          var table = document.createElement("TABLE");
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = customers[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+              var cell = row.insertCell(-1);
+              cell.innerHTML = customers[i][j];
+            }
+          }
+  
+          var dvTable = document.getElementById("totalordertable");
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+        }
+  
+        function CurrentOrderTable(data) {
+          //Build an array containing Customer records.
+          var customers = new Array();
+          customers.push([          
+            "Type",         
+            "GroupId",
+            "Bay",
+            "Shelf",
+            "Slot",
+            "Released"
+          ]);
+         // console.log(data);
+          let reqitems = [0, 1, 2, 3, 4, 5, 6]; //taking req items only for now
+          let temparr = [];
+          for (let i = 0; i < data.length; i++) {
+            temparr = [];
+            for (let j = 0; j < reqitems.length; j++) {
+              temparr.push(Object.values(data[i])[reqitems[j]]);
+            }
+            customers.push(temparr);
+          }
+         
+          //Create a HTML Table element.
+          var table = document.createElement("TABLE");
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = customers[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+              var cell = row.insertCell(-1);
+              cell.innerHTML = customers[i][j];
+            }
+          }
+  
+          var dvTable = document.getElementById("dvTable");
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+        }
+        function GenerateTable(data) {
+          //Build an array containing Customer records.
+          var customers = new Array();
+          customers.push([
+            "ArrivalTime",
+            "ObjectName",
+            "UniqueNum",
+            "BrandName",
+            "GroupId",
+            "TcdSn",
+            "Shelf",
+            "Slot",
+            "Released",
+          ]);
+          console.log(data);
+          let reqitems = [0, 1, 3, 4, 5, 6, 7, 8, 16]; //taking req items only for now
+          let temparr = [];
+          for (let i = 0; i < data.length; i++) {
+            temparr = [];
+            for (let j = 0; j < reqitems.length; j++) {
+              temparr.push(Object.values(data[i])[reqitems[j]]);
+            }
+            customers.push(temparr);
+          }
+         
+          //Create a HTML Table element.
+          var table = document.createElement("TABLE");
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = customers[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.innerHTML = customers[0][i];
+            row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < customers.length; i++) {
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount; j++) {
+              var cell = row.insertCell(-1);
+              cell.innerHTML = customers[i][j];
+            }
+          }
+  
+          var dvTable = document.getElementById("dvTable");
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+        }
+  
+       function hidemodel(){
+        const targetDiv = document.getElementById("framediv");
+        if (targetDiv.style.display !== "none") {
+      targetDiv.style.display = "none";
+    } else {
+      targetDiv.style.display = "block";
+    }
+        }
+      
+      </script>
+     <style>
+         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+  transition: all 0.3s ease;
+}
+body{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  /* background-image: linear-gradient( 135deg, #ff9a9e  10%, #F6416C 100%); */
+  background-image: linear-gradient(135deg, #ff9a9e 10%, #ffa9a9 100%);
+}
+::selection{
+  color: #f2f2f2;
+  background: #f86d8d;
+}
+body::before,
+body::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+body::before{
+  clip-path: circle(30% at left 20%);
+  opacity: 0.4;
+  /* background-image: linear-gradient( 135deg, #F6416C 10%, #ff9a9e 100%); */
+  background-image: linear-gradient(120deg, #f17777 10%, #ff9a9e 100%);
+}
+body::after{
+  opacity: 0.4;
+  clip-path: circle(25% at right 80%);
+  background-image: linear-gradient( 135deg, #F6416C 10%, #ff9a9e 100%);
+}
+header{
+  /* height: 100vh; */
+  width: 90vw;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 12;
+  border-radius: 25px;
+  margin: auto;
+  position: relative;
+  padding-bottom: 40px;
+}
+headerone{
+  height: 100vh;
+  margin-top:50px;
+  display:contents;
+  width: 90vw;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 12;
+  border-radius: 25px;
+  margin: auto;
+  position: relative;
+}
+header .navbar{
+  margin: auto;
+  width: 100%;
+  padding: 35px 50px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar .menu{
+  display: flex;
+  flex-wrap: wrap;
+}
+.navbar .logo a{
+  text-decoration: none;
+  font-size: 22px;
+  color: #000;
+  font-weight: 500;
+}
+.navbar .menu li{
+  list-style: none;
+  margin: 0 6px;
+}
+.navbar .menu a{
+  color: #000;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.navbar .menu a:hover{
+  color: #f2f2f2;
+}
+.navbar .buttons input{
+  outline: none;
+  color: #f2f2f2;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-image: linear-gradient( 135deg, #ff9a9e  10%, #F6416C 100%);
+}
+.navbar .buttons input:hover{
+  transform: scale(0.97);
+}
+ header .text-content{
+   width: 40%;
+   margin: 100px 0 0 50px ;
+ }
+.text-content h2{
+  font-size: 27px;
+  font-weight: 600;
+}
+.text-content p{
+  font-size: 15px;
+  margin-top: 10px;
+}
+header .play-button{
+  position: absolute;
+  right: 50px;
+  bottom: 40px;
+}
+.play-button .play{
+  font-size: 18px;
+  font-weight: 500;
+}
+ .play-button .play::before{
+   content: '';
+   position: absolute;
+   height: 3px;
+   width: 50px;
+   top: 50%;
+   transform: translateY(-50%);
+   left: -58px;
+   background: #000;
+ }
+.play-button i{
+  height: 40px;
+  width: 40px;
+  border: 2px solid #000;
+  line-height: 38px;
+  text-align: center;
+  margin-left: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+@media (max-width:850px) {
+  header .navbar{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 5px;
+  }
+  .navbar .menu {
+    margin: 10px 0 20px 0;
+  }
+  header .text-content{
+    margin: 30px 0 0 20px ;
+    width: 70%;
+  }
+  header .text-content h2{
+    font-size: 20px;
+  }
+}
+@media (max-width:410px) {
+  header{
+    height: 100vh;
+    width: 100%;
+    border-radius: 0px;
+  }
+  header .navbar{
+    padding: 15px 10px;
+}
+}
+
+.screen{
+    display:flex;
+    flex-direction: column;
+    
+}
+.title{
+    height:25vh;
+    width:90%;    
+    margin-left:5%;
+    text-align: center;
+    justify-content: center;    
+    display: flex;
+    align-items: center;
+}
+.ialogo img {
+        object-fit: contain;  
+        text-align: left;       
+        width: 200px;
+        height: 200px;
+        margin-left: -1000px;
+      }
+      #framediv{
+        padding-left:5%;       
+        width: 100%;
+        height:100vh;
+        
+      }
+      iframe {
+        width: 80vw;
+    height: 100vh;
+    background-color: #ffaaab;
+      }
+      
+      .orderInfo {
+        display: flex;
+        flex-direction: row;
+        height: 350px;
+        margin-top: 36px;
+      }
+      .currentOrder {
+        border: #ede7ec 2px solid;
+        display: block;
+        height: 250vh;
+        width: 50%;
+        padding-bottom: -10px;
+        text-align: center;
+        
+      }
+      .tubeUtilization {
+        border: #ede7ec 2px solid;
+        height: 250vh;
+        width: 50%;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .buttonsdiv{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      #dvTable{
+        position: relative;
+        margin-top: 70px;
+      }
+      #totalordertable{        
+        position: relative;
+    margin-top: 20px;
+    height: 250px;
+      }
+
+      #overallOrdertable{
+        position: relative;
+        margin-top: 145px;
+      }
+      #tubeutilization{
+        position: relative;
+        margin-top: 100px;
+      }
+      .tubefillinfo{
+        display: flex;
+        flex-direction: column;
+        margin-left: 155px;
+      }
+      .item1{
+        display:flex;
+        flex-direction: row;
+      }
+      .itemvar{
+        display:flex;
+flex-basis: 50%;
+text-align: left;
+      }
+      .value{
+        display:flex;
+        flex-basis: 50%;
+        justify-content: left;
+
+      }
+      .item2{
+        display:flex;
+        flex-direction: row;
+      }
+      .item3{
+        display:flex;
+        flex-direction: row;
+      }
+      td,
+      th {
+        padding: 15px 20px;
+        text-align: center;
+      }
+
+      th {
+        /* background-color: #46154e; */
+        background-image: linear-gradient( 
+135deg, #915659 10%, #ffd1dc 100%);
+        color: #fafafa;
+        font-family: "Open Sans", Sans-serif;
+        font-weight: 200;
+        text-transform: uppercase;
+      }
+
+      tr {
+        width: 100%;
+        background-color: #fafafa;
+        font-family: "Montserrat", sans-serif;
+      }
+
+      tr:nth-child(even) {
+        background-color: #eeeeee;
+      }
+
+      table {
+        position: relative;
+        z-index: 2;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 60%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        box-shadow: 0 2px 15px rgba(64, 64, 64, 0.7);
+        border-radius: 12px 12px 12px 12px;
+        overflow: hidden;
+      }
+      #test{
+        height: 40px;
+    width: 50px;
+    display: block;
+    border-color: #000;
+    background: blue;
+      }
+
+
+
+     </style>
+   </head>
+<body>
+    <div class="screen">
+    <div class="title">
+        <div class="ialogo">         
+            <img src="./iA_Logo.png" alt="" />
+          </div>
+        <div class="text-content">
+            <h2>Client-View</h2>
+        </div>
+    </div>
+  <header>
+    <nav class="navbar">
+       
+      <ul class="menu">
+        <li><a href="#">FlexSimModelView</a></li>
+        <li><a href="#">Show/Hide</a></li>
+        <li><a href="#">Documentation</a></li>        
+      </ul>     
+    </nav>
+    <div id="framediv">
+        <iframe id="iframeid" src="http://localhost:80/" title=""></iframe>
+      </div> 
+    
+  </header>
+  <!-- <header>
+    <nav class="navbar">
+       
+      <ul class="menu">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Latest</a></li>
+        <li><a href="#">Offers</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <div class="buttons">
+        <input type="button" value="Login">
+        <input type="button" value="Register">
+      </div>
+    </nav>
+    <div class="text-content">
+      <h2>Learn To Enjoy,<br>Every Moment Of Your Life</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum facere in nam, officiis aspernatur consectetur aliquid sequi possimus et. Sint.</p>
+    </div>
+    <div class="play-button">
+      <span class="play">Play Video</span>
+      <i class="fas fa-play" onclick="click()"></i>
+    </div>
+  </header> -->
+  <headerone>
+  <div class="orderInfo">
+        <div class="currentOrder">
+          <h3>Machine Emulator</h3>          
+          <hr />
+          <div id="dvTable"></div>
+          <hr />
+          <h3>Total Orders Processed</h3>          
+          <hr />
+          <div id="totalordertable"></div>
+          <hr />
+          <h3>Tube Utilization</h3>          
+          <hr />
+          <div id="tubeutilization"></div>  
+          <div class="tubefillinfo">
+            <div class="item1">
+              <div class="itemvar">
+              <h3>For GroupID <h3>
+              </div>
+              <div class="value" id ="valueid">
+                <input id="groupid" type="text">
+              </div>
+              </div>
+                <div class="item2">
+                  <div class="itemvar">
+                <h3>The number of items filled are </h3>
+              </div>
+              <div class="value">
+                <input id="nosfilled" type="text">    
+              </div>         
+                </div>
+                <div class="item3">
+                  <div class="itemvar">
+                <h3>Items to fill to complete the order</h3>
+                </div>
+                <div class="value">
+                <input id="nostobefilled" type="text">         
+              </div>    
+              </div>
+              <div id="test">
+                <input type="button" id="btn" value="refresh" />
+              </div>
+            </div>
+        </div>
+        <div class="tubeUtilization">
+          <h3>Pseudo-NEXiA</h4>
+          <hr />
+          
+          <div id="overallOrdertable"> </div>
+               
+          </div> 
+                      
+        </div>
+   
+</div>
+</headerone>
+</body>
+</html>

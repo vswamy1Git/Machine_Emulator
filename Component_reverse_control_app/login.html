@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login Form - iA</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="login.css">
+        <script src="login.js"></script>
+    </head>
+    <body>
+        <form class="login-form" action="./" method="POST">
+            <div class="login-form__logo-container">
+                <img class="login-form__logo" src="./iA_Logo.png" alt="Logo">
+            </div>
+            <div class="login-form__content">
+                <div class="login-form__header">Login to your account</div>
+                <input class="login-form__input" id="username" type="text" name="dc_username" placeholder="Username">
+                <input class="login-form__input" id="password"  type="password" name="dc_username" placeholder="Password">
+                <button class="login-form__button" type="button" onclick="validateuser()">Login</button>
+                <div class="login-form__links">
+                    <a class="login-form__link" href="./">Forgot your password?</a>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

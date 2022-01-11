@@ -1,0 +1,114 @@
+
+
+body {
+    /* background: #ff9a9e; */
+    background-image: linear-gradient(135deg, #ff9a9e 10%, #ffa9a9 100%);
+    margin: 15px;
+    margin-top: 50px;
+}
+::selection{
+    color: #f2f2f2;
+    background: #f86d8d;
+  }
+  body::before,
+  body::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+  }
+  body::before{
+    clip-path: circle(30% at left 20%);
+    opacity: 0.4;
+    /* background-image: linear-gradient( 135deg, #F6416C 10%, #ff9a9e 100%); */
+    background-image: linear-gradient(120deg, #f17777 10%, #ff9a9e 100%);
+  }
+  body::after{
+    opacity: 0.4;
+    clip-path: circle(25% at right 80%);
+    background-image: linear-gradient( 135deg, #F6416C 10%, #ff9a9e 100%);
+  }
+
+.login-form,
+.login-form * {
+    box-sizing: border-box;
+    font-family: 'Source Sans Pro';
+}
+
+.login-form {
+    max-width: 350px;
+    margin: 100px auto;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.login-form__logo-container {
+    padding-top: 30px;
+    background: #eeeeee;
+}
+
+.login-form__logo {
+    display: block;
+    max-width: 125px;
+    margin: 0 auto;
+}
+
+.login-form__content {
+    padding: 30px;
+    background: #eeeeee;
+}
+
+.login-form__header {
+    margin-bottom: 15px;
+    text-align: center;
+    color:#e3757c;
+}
+
+.login-form__input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2px solid #dddddd;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.5s;
+}
+
+.login-form__input:focus {
+    border-color: #600e63;
+}
+
+.login-form__input::placeholder {
+    color: #aaaaaa;
+}
+
+.login-form__button {
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    background:#e3757c;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form__button:active {
+    background: #600e63;
+}
+
+.login-form__links {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.login-form__link {
+    font-size: 0.9em;
+    color: #e3757c;
+    text-decoration: none;
+}
